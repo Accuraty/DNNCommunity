@@ -1,0 +1,21 @@
+<div class="container-fluid @(ListContent.BgColor != null ? @ListContent.BgColor : "" ) mb-0">
+
+	@Edit.Toolbar(ListContent)
+
+	<div class="container mb-0">
+		<div class="row @ListContent.ColVerticalAlign">
+			@foreach(var cont in AsDynamic(Data["Default"])){
+				<a name="@cont.Anchor"></a>
+				<div class="@(cont.Presentation.Width != null ? @cont.Presentation.Width : "col-auto" ) @(cont.Presentation.VerticalPadding != null ? @cont.Presentation.VerticalPadding : "" ) @(cont.Presentation.TextAlign != null ? @cont.Presentation.TextAlign : "" )">
+					@Edit.Toolbar(cont)
+					@Html.Raw(String.IsNullOrEmpty(cont.Presentation.Image) ? "" : "<div><img class=\"img-fluid\" src=\"" + @cont.Presentation.Image + "\"></div>" )
+					@Html.Raw(String.IsNullOrEmpty(cont.Presentation.Title) ? "" : "<h2>" + @cont.Presentation.Title + "</h2>" )
+					@Html.Raw(cont.Content)
+					@foreach(var item in AsDynamic(cont.Presentation.Button)){
+						<a href="@(String.IsNullOrEmpty(@item.File) ? @item.Link  : @item.File)" class="btn @item.Color mb-3" @((item.OpenWindow == true) ? "target=_blank" : "" ) ><i class="@(String.IsNullOrEmpty(@item.Icon) ? "" : "fas " + @item.Icon + " fa-lg mr-3")"></i>@item.Text</a>
+					}
+				</div>
+			}
+		</div>
+	</div>
+</div>
