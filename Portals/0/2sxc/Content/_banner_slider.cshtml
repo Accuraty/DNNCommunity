@@ -1,0 +1,35 @@
+<div class="text-center">
+    <div>@Edit.Toolbar(ListContent, actions: "edit")</div>
+    <div>@Edit.Toolbar(Content, actions: "new,instance-list")</div>
+</div>
+<div id="BannerCarousel" class="carousel slide" data-ride="carousel">
+<!-- Indicators -->
+    <ol class="carousel-indicators">
+        @{int i = 0;}
+        @foreach(var indic in AsDynamic(Data["Default"])){
+            <li data-target="#BannerCarousel" data-slide-to="@i" @(i == 0 ? "class=active" : "")></li>    
+            i++;
+        }
+    </ol>
+    
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        @{int k = 0;}
+        @foreach(var inner in AsDynamic(Data["Default"])){
+            <div class="container-fluid mb-0 px-0 carousel-item@(k == 0 ? " active" : "") homeCarouselItem" style="background:url('@inner.Image') no-repeat center center;background-size:cover;min-height:1000px;">
+                @Edit.Toolbar(inner, actions: "edit,remove")
+                <!-- Content -->
+                <div class="container-fluid bg-banner-transparent text-center py-5 mb-0">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 py-5">
+                        <h1 class="bannerTitle">@inner.Image_Title</h1>
+                        <h2 class="bannerSubTitle">@inner.Image_SubTitle</h2>
+                    </div>
+                    @foreach(var item in AsDynamic(inner.Presentation.Button)){
+                        <a href="@(String.IsNullOrEmpty(@item.File) ? @item.Link  : @item.File)" class="btn btn-lg @item.Color mb-3" @((item.OpenWindow == true) ? "target=_blank" : "" ) ><i class="@(String.IsNullOrEmpty(@item.Icon) ? "" : "fas " + @item.Icon + " fa-lg mr-3")"></i>@item.Text</a>
+                    }
+                </div>
+            </div>
+            k++; 
+        }
+    </div>
+</div>
