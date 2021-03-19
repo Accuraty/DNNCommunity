@@ -1,4 +1,5 @@
 @using Connect.Koi;
+@using Dynlist = System.Collections.Generic.IEnumerable<dynamic>;
 
 @{
     var lib = CreateInstance("_library.cshtml"); 
@@ -37,16 +38,30 @@
 @*
                 <h2>@allCategories.Where(x => x.UrlKey == catFilter).FirstOrDefault().ShowedTitle</h2>
 *@
+                <span>
+                  <a class="btn-sm btn-success btn mb-1" href="@lib.LinkToPage(newsPageTab, "", "", "", "", "", "")">
+                    Clear Filter
+                  </a>
+                </span>
                 @foreach (var c in allCategories)
                 {
-                    <span><a @Koi.Class("all='" + (Request.QueryString["category"] == c.UrlKey ? "active" : "") + "' bs3='btn btn-primary btn-xs' bs4,unk='btn btn-primary btn-sm'") href="@lib.LinkToPage(newsPageTab, "category", c.UrlKey, "", "", "", "")">@c.Name</a></span>
+                <span>
+                  <a @Koi.Class("all='" + (catFilter == c.UrlKey ? "active disabled btn-outline-primary" : "btn-sm btn-primary") 
+                    + "' bs3='btn btn-primary btn-xs' bs4,unk='btn mb-1'") 
+                    href="@lib.LinkToPage(newsPageTab, "category", c.UrlKey, "", "", "", "")"
+@*                    title="UrlKey=@c.UrlKey, match? @(catFilter == c.UrlKey), UrlKey.GetType()=@c.UrlKey.GetType()" *@ @* debug? *@
+                  >@c.Name
+                  </a>
+                </span>
                 }
             </div>
         }
     <div class="row">
         
         <!-- Beginning of content loop -->
-        @foreach (var item in newsToShowRandomized)
+        @foreach (var item in newsToShowRandomized
+          .Where(i => (i.Categories as Dynlist).Any(c => c.UrlKey == catFilter) || !hasCategoryFilter)
+        )
         {
         <div @Koi.Class("all='sc-element' bs3='col col-xs-12 col-sm-12 col-md-12 col-lg-12' bs4,unk='col-12 col-md-12 col-lg-12 col-xl-12'")>
             @Edit.Toolbar(item)
@@ -82,11 +97,17 @@
                             @if(App.Settings.ActivateCategories) {
                                 foreach (var cat in  @item.Categories)
                                 {
-                                    <a href="@lib.LinkToPage(newsPageTab, "category", cat.UrlKey, "", "", "", "")">@cat.Name</a>
+                                    if(hasCategoryFilter)
+                                    {
+                                        <p class="my-1 lead">@cat.Name</p>
+                                    } else {
+                                    <a title="click to filter on only @cat.Name"
+                                      href="@lib.LinkToPage(newsPageTab, "category", cat.UrlKey, "", "", "", "")">@cat.Name</a>
+                                    }
                                 }
                             }
                             </span>
-                        
+
                             <p>
                                 @Html.Raw(item.Teaser.Replace("\n", "<br />"))
                             </p>
