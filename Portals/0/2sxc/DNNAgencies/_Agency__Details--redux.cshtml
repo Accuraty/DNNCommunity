@@ -1,0 +1,128 @@
+@inherits Custom.Hybrid.Razor12
+@* This inherits statement gets you features like App, CmsContext, Data etc. - you can delete this comment *@
+@using ToSic.Sxc.Services; @* Make it easier to use https://r.2sxc.org/services *@
+
+@using ToSic.Razor.Blade;
+
+@* Note: theme is still Bootstrap (v4.6.2) 20230225 JRF *@
+
+@{
+  var pageSvc = GetService<IPageService>();
+  var renderSvc = GetService<IRenderService>();
+  var imageSvc = GetService<IImageService>();
+  var logoSettings = AsDynamic(new { Width = 600, ResizeMode = "Max", Quality = 75 });
+  var mergedSettings = AsDynamic(logoSettings, Settings.Images.Content); // Merged settings, first one has higher priority
+
+  int agencyId = 0;
+  int.TryParse(urlQSParam("agency-details"), out agencyId);
+  var agencies = AsList(App.Data["News"]);
+  var item = agencies 
+    .Where(a => a.EntityId == agencyId)
+    .FirstOrDefault()
+  ;
+
+  if (item == null) {
+    <p>Sorry, no agency found with an id of @agencyId.</p>
+    <a class="btn btn-primary" href="@Link.To()">Back</a>
+    return;
+  }
+
+  @* first add some meta *@
+  pageSvc.SetTitle(item.Title.ToString() + " | DNN Agency Details | "); // why does original page name still get appended?
+  pageSvc.SetDescription(Text.Crop(Tags.Strip(item.Teaser), 150) + " | ");
+  // pageSvc.SetKeywords( ... ); // future
+}
+
+@if (false && isAccuratyIP()) { // see @functions below
+<pre>Debug:
+agencies.Count(): @agencies.Count()
+item.GetType(): @item.GetType()
+agency-details/ = @agencyId
+</pre>
+}
+
+<div class="container-fluid my-5"
+  id="wrapper-agencyid-@item.EntityId" 
+  @Edit.TagToolbar(item))
+>
+  <div class="row">
+
+    <div class="col-md-7 order-2 order-md-1">
+      <h1>@item.Title</h1>
+      <p>
+      @foreach (var cat in  @item.Categories)
+      {
+        <a href="@Link.To(parameters: "category=" + cat.UrlKey)"
+          title="Return to the list of agencies filtered on @cat.Name."
+        >@cat.Name</a>
+      }
+      </p>
+
+      @if(item.ShowTeaserInDetail) 
+      {
+        <p class="lead app-news-detail-teaser">
+          @item.Teaser
+        </p>
+      }    
+      @if (Text.Has(item.Website)) {
+        <p class="mb-1">Website: <a href="@Html.Raw(item.Website)" target="_blank"> @Html.Raw(item.Website)</a> </p>
+      }
+      @if (Text.Has(item.Email)) {
+        <p class="mb-1">Email: @Html.Raw(item.Email) </p>
+      }
+      @if (Text.Has(item.Phone)) {
+        <p class="mb-1">Phone: @Html.Raw(item.Phone) </p>
+      }
+    </div>
+
+    @if(Text.Has(item.Image)) {
+    <div class="col-md-5 order-1 order-md-2 mt-1 mb-5">
+      @imageSvc.Picture(item.Image, mergedSettings, imgAlt: "logo for " + item.Title, imgClass: "ml-1") @* <img src="item.Image" alt="@item.Title" class="img-fluid" /> *@
+    </div>
+    }
+
+    <div class="col order-3">
+      <p>
+        @renderSvc.All(item, field: "BodyContentBlocks", merge: item.Body)
+        @* @Html.Raw(item.Body) *@
+        @* old: @ToSic.SexyContent.ContentBlocks.Render.All(item, field: "BodyContentBlocks", merge: item.Body) *@
+      </p>
+    </div>
+
+    <div class="col-12 order-4 my-5">
+      <a class="btn btn-primary" href="@Link.To()">
+        <i class="fa-solid fa-chevrons-left"></i> @* sigh, no FontAwesome (yet) *@
+        Back
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+@functions {
+  // safely fetch our URL Param
+  public string urlQSParam(string paramName = "demo") {
+    string param = Request.QueryString[paramName];
+    return Text.Has(param, false) ? param : "0";
+  }
+  // by IP, is the remote IP address a known Accuraty WAN IP?
+  public bool isAccuratyIP() {
+    var list = new List<string> {
+      "127.0.0.1",        // localhost
+      "140.141.191.145",  // 1800 Oak
+      "97.81.36.168",     // RRMA/Obtuse 202212 JRF
+      "24.238.80.108",    // 132CPPA 202209 JRF
+    };
+    return list.Contains(GetIpAddress());
+  }
+  // Get IP address of the visitor
+  public string GetIpAddress() {
+    string stringIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+    if (stringIpAddress == null) {
+      stringIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+    }
+    return stringIpAddress;
+  }
+}
+

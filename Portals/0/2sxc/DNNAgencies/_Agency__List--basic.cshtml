@@ -1,6 +1,8 @@
 @using Connect.Koi;
 @using Dynlist = System.Collections.Generic.IEnumerable<dynamic>;
 
+@using ToSic.Razor.Blade;
+
 @{
     var lib = CreateInstance("_library.cshtml"); 
 
@@ -20,6 +22,8 @@
 
     Random rndm = new Random();
     var newsToShowRandomized = newsToShow.OrderBy(n => rndm.Next());
+
+    string urlDetailsParam = "agency-details"; // isAccuratyIP() ? "agency-details" : "detail";
 }
 
 @if(!String.IsNullOrEmpty(Content.NewsPage)) 
@@ -28,6 +32,9 @@
     newsPageTab = int.Parse((AsEntity(Content).GetBestValue("NewsPage")).Split(':')[1]);
 }
 
+@if (false && isAccuratyIP()) {
+<pre>@GetIpAddress() - polymorph, use alternate agency details View 20230224 JRF</pre>
+}
 
 <div class="app-news app-news-list sc-element @((Permissions.UserMayEditContent) ? "app-edit" : "")" >
     @Edit.Toolbar(actions: "new, contentitems", contentType: "News", prefill: new { Date = DateTime.Now.Date, ShowFrom = DateTime.Now.Date, ShowTo =  (DateTime.Now.Date.AddYears(3)).Date } , settings: new { hover = "left", showCondition = true })
@@ -66,7 +73,11 @@
         <div @Koi.Class("all='sc-element' bs3='col col-xs-12 col-sm-12 col-md-12 col-lg-12' bs4,unk='col-12 col-md-12 col-lg-12 col-xl-12'")>
             @Edit.Toolbar(item)
             @{
-                string detailsLink = @lib.LinkToPage(newsPageTab, "mid", ((String.IsNullOrEmpty(Content.MainModuleId)) ? (Dnn.Module.ModuleID).ToString() : (Content.MainModuleId)), "detail", item.EntityId.ToString(), "title", item.UrlKey);
+              string detailsLink = @lib.LinkToPage(newsPageTab
+                , "mid", ((String.IsNullOrEmpty(Content.MainModuleId)) ? (Dnn.Module.ModuleID).ToString() : (Content.MainModuleId))
+                , urlDetailsParam, item.EntityId.ToString()
+                , "title", item.UrlKey
+              );
             }
             <div class="app-details-link" onclick="window.open('@detailsLink','_self');">
                 <div class="row">
@@ -145,3 +156,23 @@
 <script src="@App.Path/dist/script.js" data-enableoptimizations="true" ></script>
 
 
+@functions {
+  // by IP, is the remote IP address a known Accuraty WAN IP?
+  public bool isAccuratyIP() {
+    var list = new List<string> {
+      "127.0.0.1",        // localhost
+      "140.141.191.145",  // 1800 Oak
+      "97.81.36.168",     // RRMA/Obtuse 202212 JRF
+      "24.238.80.108",    // 132CPPA 202209 JRF
+    };
+    return list.Contains(GetIpAddress());
+  }
+  // Get IP address of the visitor
+  public string GetIpAddress() {
+    string stringIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+    if (stringIpAddress == null) {
+      stringIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+    }
+    return stringIpAddress;
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "_": {
+    "V": 1
+  },
+  "Entity": {
+    "Id": 1717,
+    "Version": 100,
+    "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a",
+    "Type": {
+      "Name": "DataPipeline",
+      "Id": "DataPipeline"
+    },
+    "Attributes": {
+      "String": {
+        "Description": {
+          "*": "ALL MVP profiles"
+        },
+        "Name": {
+          "*": "mvp-profiles"
+        },
+        "StreamsOut": {
+          "*": "ListContent,Default,CurrentMVPs,HonoraryMVPs,LifetimeMVPs"
+        },
+        "StreamWiring": {
+          "*": "1d6248ba-890b-46b0-8a3e-ed0550f9fd53:Default>Out:CurrentMVPs\r\nb836c21c-5eec-4098-97f3-de1ebb4e892c:Default>Out:HonoraryMVPs\r\n191fc8f1-738d-4eda-830f-1278f3459337:Default>Out:LifetimeMVPs\r\n5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Default>1d6248ba-890b-46b0-8a3e-ed0550f9fd53:Default\r\n5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Default>b836c21c-5eec-4098-97f3-de1ebb4e892c:Default\r\n5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Default>191fc8f1-738d-4eda-830f-1278f3459337:Default\r\nc8137bd3-bb0b-4de9-9c14-151e5ce974d5:Default>5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Default\r\nc8137bd3-bb0b-4de9-9c14-151e5ce974d5:Drafts>5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Drafts\r\nc8137bd3-bb0b-4de9-9c14-151e5ce974d5:Published>5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65:Published"
+        },
+        "TestParameters": {
+          "*": "[Module:ModuleID]=540"
+        }
+      },
+      "Boolean": {
+        "AllowEdit": {
+          "*": true
+        }
+      }
+    },
+    "Owner": "dnn:userid=2",
+    "Metadata": [
+      {
+        "Id": 1718,
+        "Version": 100,
+        "Guid": "c8137bd3-bb0b-4de9-9c14-151e5ce974d5",
+        "Type": {
+          "Name": "DataPipelinePart",
+          "Id": "DataPipelinePart"
+        },
+        "Attributes": {
+          "String": {
+            "Description": {
+              "*": ""
+            },
+            "Name": {
+              "*": "ICache"
+            },
+            "PartAssemblyAndType": {
+              "*": "ToSic.Eav.DataSources.Caches.ICache, ToSic.Eav.DataSources"
+            },
+            "VisualDesignerData": {
+              "*": "{\r\n  \"Top\": 740,\r\n  \"Left\": 400\r\n}"
+            }
+          }
+        },
+        "Owner": "dnn:userid=2",
+        "For": {
+          "Target": "Entity",
+          "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a"
+        }
+      },
+      {
+        "Id": 1719,
+        "Version": 100,
+        "Guid": "5b0ea8f2-4e90-4c88-8f14-8f8a3ffebd65",
+        "Type": {
+          "Name": "DataPipelinePart",
+          "Id": "DataPipelinePart"
+        },
+        "Attributes": {
+          "String": {
+            "Description": {
+              "*": ""
+            },
+            "Name": {
+              "*": "PublishingFilter"
+            },
+            "PartAssemblyAndType": {
+              "*": "ToSic.Eav.DataSources.PublishingFilter, ToSic.Eav.DataSources"
+            },
+            "VisualDesignerData": {
+              "*": "{\r\n  \"Top\": 500,\r\n  \"Left\": 440\r\n}"
+            }
+          }
+        },
+        "Owner": "dnn:userid=2",
+        "For": {
+          "Target": "Entity",
+          "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a"
+        }
+      },
+      {
+        "Id": 1733,
+        "Version": 61,
+        "Guid": "1d6248ba-890b-46b0-8a3e-ed0550f9fd53",
+        "Type": {
+          "Name": "DataPipelinePart",
+          "Id": "DataPipelinePart"
+        },
+        "Attributes": {
+          "String": {
+            "Description": {
+              "*": ""
+            },
+            "Name": {
+              "*": "CurrentMVPs"
+            },
+            "PartAssemblyAndType": {
+              "*": "ToSic.SexyContent.Environment.Dnn7.DataSources.DnnSqlDataSource, ToSic.SexyContent"
+            },
+            "VisualDesignerData": {
+              "*": "{\r\n  \"Top\": 280,\r\n  \"Left\": 172\r\n}"
+            }
+          }
+        },
+        "Owner": "dnn:userid=2",
+        "For": {
+          "Target": "Entity",
+          "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a"
+        },
+        "Metadata": [
+          {
+            "Id": 1735,
+            "Version": 32,
+            "Guid": "f152adc3-be53-4c73-ada8-2fb007dba6c0",
+            "Type": {
+              "Name": "ToSic.SexyContent.DataSources.DnnSqlDataSource",
+              "Id": "|Config ToSic.SexyContent.DataSources.DnnSqlDataSource"
+            },
+            "Attributes": {
+              "String": {
+                "ContentType": {
+                  "*": "CurrentMVPs"
+                },
+                "SelectCommand": {
+                  "*": "SELECT\n\tu.DisplayName,\n\tu.FirstName, \n\tu.LastName, \n\tu.UserID As [UserID], \n\tur.RoleID, \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 27) As [Photo], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 31) As [Website], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 50) As [Twitter], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 52) As [LinkedIn], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 49) As [Facebook], \n\t(SELECT ISNULL(l.Text , up.PropertyValue) FROM UserProfile up LEFT JOIN dbo.Lists l ON l.EntryID = CASE WHEN ISNUMERIC(up.PropertyValue)=1 THEN up.PropertyValue ELSE -1 END WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 40) As [Country],\n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 51) As [GitHub], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 48) As [Stackoverflow]\n\nFROM \n\tUserRoles ur INNER JOIN\n\tUsers u ON ur.UserID = u.UserID\n\nWHERE (ur.RoleID = 32)\n\nORDER BY NEWID()"
+                }
+              }
+            },
+            "Owner": "dnn:userid=2",
+            "For": {
+              "Target": "Entity",
+              "Guid": "1d6248ba-890b-46b0-8a3e-ed0550f9fd53"
+            }
+          }
+        ]
+      },
+      {
+        "Id": 1736,
+        "Version": 42,
+        "Guid": "b836c21c-5eec-4098-97f3-de1ebb4e892c",
+        "Type": {
+          "Name": "DataPipelinePart",
+          "Id": "DataPipelinePart"
+        },
+        "Attributes": {
+          "String": {
+            "Description": {
+              "*": ""
+            },
+            "Name": {
+              "*": "HonoraryMVPs"
+            },
+            "PartAssemblyAndType": {
+              "*": "ToSic.SexyContent.Environment.Dnn7.DataSources.DnnSqlDataSource, ToSic.SexyContent"
+            },
+            "VisualDesignerData": {
+              "*": "{\r\n  \"Top\": 280,\r\n  \"Left\": 446\r\n}"
+            }
+          }
+        },
+        "Owner": "dnn:userid=2",
+        "For": {
+          "Target": "Entity",
+          "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a"
+        },
+        "Metadata": [
+          {
+            "Id": 1737,
+            "Version": 9,
+            "Guid": "c4872a75-855f-47ea-8aa0-58067734e790",
+            "Type": {
+              "Name": "ToSic.SexyContent.DataSources.DnnSqlDataSource",
+              "Id": "|Config ToSic.SexyContent.DataSources.DnnSqlDataSource"
+            },
+            "Attributes": {
+              "String": {
+                "ContentType": {
+                  "*": "HonoraryMVPs"
+                },
+                "SelectCommand": {
+                  "*": "SELECT\n\tu.DisplayName,\n\tu.FirstName, \n\tu.LastName, \n\tu.UserID As [UserID], \n\tur.RoleID, \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 27) As [Photo], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 31) As [Website], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 50) As [Twitter], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 52) As [LinkedIn], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 49) As [Facebook], \n\t(SELECT ISNULL(l.Text , up.PropertyValue) FROM UserProfile up LEFT JOIN dbo.Lists l ON l.EntryID = CASE WHEN ISNUMERIC(up.PropertyValue)=1 THEN up.PropertyValue ELSE -1 END WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 40) As [Country],\n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 51) As [GitHub], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 47) As [Stackoverflow]\n\nFROM \n\tUserRoles ur INNER JOIN\n\tUsers u ON ur.UserID = u.UserID\n\nWHERE (ur.RoleID = 33)\n\nORDER BY NEWID()"
+                }
+              }
+            },
+            "Owner": "dnn:userid=2",
+            "For": {
+              "Target": "Entity",
+              "Guid": "b836c21c-5eec-4098-97f3-de1ebb4e892c"
+            }
+          }
+        ]
+      },
+      {
+        "Id": 1738,
+        "Version": 36,
+        "Guid": "191fc8f1-738d-4eda-830f-1278f3459337",
+        "Type": {
+          "Name": "DataPipelinePart",
+          "Id": "DataPipelinePart"
+        },
+        "Attributes": {
+          "String": {
+            "Description": {
+              "*": ""
+            },
+            "Name": {
+              "*": "LifetimeMVPs"
+            },
+            "PartAssemblyAndType": {
+              "*": "ToSic.SexyContent.Environment.Dnn7.DataSources.DnnSqlDataSource, ToSic.SexyContent"
+            },
+            "VisualDesignerData": {
+              "*": "{\r\n  \"Top\": 280,\r\n  \"Left\": 720\r\n}"
+            }
+          }
+        },
+        "Owner": "dnn:userid=2",
+        "For": {
+          "Target": "Entity",
+          "Guid": "00322596-3e9c-458e-ae7b-f3d172e0101a"
+        },
+        "Metadata": [
+          {
+            "Id": 1739,
+            "Version": 9,
+            "Guid": "7ecca30e-7df9-40f5-9c04-3e6b3d35a86f",
+            "Type": {
+              "Name": "ToSic.SexyContent.DataSources.DnnSqlDataSource",
+              "Id": "|Config ToSic.SexyContent.DataSources.DnnSqlDataSource"
+            },
+            "Attributes": {
+              "String": {
+                "ContentType": {
+                  "*": "LifetimeMVPs"
+                },
+                "SelectCommand": {
+                  "*": "SELECT\n\tu.DisplayName,\n\tu.FirstName, \n\tu.LastName, \n\tu.UserID As [UserID], \n\tur.RoleID, \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 27) As [Photo], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 31) As [Website], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 50) As [Twitter], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 52) As [LinkedIn], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 49) As [Facebook], \n\t(SELECT ISNULL(l.Text , up.PropertyValue) FROM UserProfile up LEFT JOIN dbo.Lists l ON l.EntryID = CASE WHEN ISNUMERIC(up.PropertyValue)=1 THEN up.PropertyValue ELSE -1 END WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 40) As [Country],\n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 51) As [GitHub], \n\t(SELECT up.PropertyValue FROM UserProfile up WHERE u.UserID = up.UserID And up.PropertyDefinitionID = 47) As [Stackoverflow]\n\nFROM \n\tUserRoles ur INNER JOIN\n\tUsers u ON ur.UserID = u.UserID\n\nWHERE (ur.RoleID = 41)\n\nORDER BY NEWID()"
+                }
+              }
+            },
+            "Owner": "dnn:userid=2",
+            "For": {
+              "Target": "Entity",
+              "Guid": "191fc8f1-738d-4eda-830f-1278f3459337"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

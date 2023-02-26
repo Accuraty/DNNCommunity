@@ -1,15 +1,25 @@
-@using System.Web.UI.HtmlControls
+@using System.Web.UI.HtmlControls;
 @using Connect.Koi;
+
+
+@using Microsoft.Extensions.DependencyInjection;
+@using DotNetNuke.Common.Extensions;
+@using ToSic.Sxc.Services; @* renderSvc (see below) *@
+@using ToSic.Razor.Blade;
 
 @{
     var item = AsDynamic(Data["Default"]).FirstOrDefault();
     var lib = CreateInstance("_library.cshtml");
     
     var newsPage = "";
-    var newsPageTab = @Dnn.Module.TabID;
+    var newsPageTab = @Dnn.Module.TabID; // future? CmsContext.Page.Id; 
 
     var pageHandler = HttpContext.Current.Handler as Page;
     var tp = (DotNetNuke.Framework.CDefault)pageHandler;    
+
+    //var ServiceProvider = HttpContext.Current.GetScope().ServiceProvider;
+    //var renderSvc = ServiceProvider.GetService<IRenderService>(); 
+    // https://docs.2sxc.org/abyss/releases/history/v13/sxc-static-render/index.html
 }
 @if (pageHandler != null && tp != null)
 {
@@ -105,7 +115,11 @@ else
             }
             
             <p class="app-news-detail-body">
-                @ToSic.SexyContent.ContentBlocks.Render.All(item, field: "BodyContentBlocks", merge: item.Body)
+              <code>[ Unable to display content, a fix is in the works - 20230224 JRF ]</code>
+              @* code from pre-v13 2sxc:
+              @ToSic.SexyContent.ContentBlocks.Render.All(item, field: "BodyContentBlocks", merge: item.Body) 
+              *@
+
             </p>
 
             <p class="app-news-detail-body app-news-detail-body-more">
