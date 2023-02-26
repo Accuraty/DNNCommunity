@@ -1,0 +1,87 @@
+{
+  "_": {
+    "V": 1
+  },
+  "Entity": {
+    "Id": 1751,
+    "Version": 1,
+    "Guid": "22f2482e-075f-40bb-8f4f-4dae2b27e505",
+    "Type": {
+      "Name": "2SexyContent-Template",
+      "Id": "2SexyContent-Template"
+    },
+    "Attributes": {
+      "String": {
+        "ContentTypeStaticName": {
+          "*": ""
+        },
+        "ListContentTypeStaticName": {
+          "*": ""
+        },
+        "ListPresentationTypeStaticName": {
+          "*": ""
+        },
+        "Location": {
+          "*": "Portal File System"
+        },
+        "Name": {
+          "*": "LifetimeMVPs"
+        },
+        "Path": {
+          "*": "_lifetimeMVPs.cshtml"
+        },
+        "PresentationTypeStaticName": {
+          "*": ""
+        },
+        "StreamsToPublish": {
+          "*": ""
+        },
+        "Type": {
+          "*": "C# Razor"
+        },
+        "ViewNameInUrl": {
+          "*": ""
+        }
+      },
+      "Entity": {
+        "ContentDemoEntity": {
+          "*": []
+        },
+        "ListContentDemoEntity": {
+          "*": []
+        },
+        "ListPresentationDemoEntity": {
+          "*": []
+        },
+        "Pipeline": {
+          "*": [
+            "00322596-3e9c-458e-ae7b-f3d172e0101a"
+          ]
+        },
+        "PresentationDemoEntity": {
+          "*": []
+        }
+      },
+      "Boolean": {
+        "IsHidden": {
+          "*": false
+        },
+        "PublishData": {
+          "*": false
+        },
+        "UseForList": {
+          "*": false
+        }
+      }
+    },
+    "Owner": "dnn:userid=2",
+    "Assets": [
+      {
+        "Storage": "app",
+        "Name": "_lifetimeMVPs.cshtml",
+        "Folder": "",
+        "File": "\r\n@Edit.Toolbar()\r\n<div class=\"container\">\r\n    <div class=\"row\">\r\n        @foreach(var mvp in AsDynamic(Data[\"LifetimeMVPs\"])){\r\n            <div class=\"card border-0 col-md-3 mb-3\">\r\n                <div class=\"bg-light rounded-top\">\r\n                    <img class=\"card-img-top rounded-circle p-4\" src=\"/DnnImageHandler.ashx?mode=profilepic&userId=@mvp.UserID&h=200&w=200\" alt=\"Card image cap\">\r\n                </div>\r\n                <div class=\"card-body text-center bg-secondary rounded-bottom\">\r\n                    <h4 class=\"card-title h-20\">@mvp.FirstName @mvp.LastName</h4>\r\n                    @Html.Raw(String.IsNullOrEmpty(@mvp.Country.ToString()) ? \"<p class=\\\"card-text h-20\\\">&nbsp;</p>\" : \"<p class=\\\"card-text\\\">\" + @mvp.Country + \"</p>\" )\r\n                    @Html.Raw(String.IsNullOrEmpty(@mvp.Website.ToString()) ? \"<p class=\\\"card-text h-20\\\"></p>\" : \"<p class=\\\"card-text\\\"><a href=\\\"\" + @mvp.Website + \"\\\" class=\\\"btn btn-primary\\\" target=\\\"_default\\\">Website</a></p>\" )\r\n                    <div class=\"row h-20\">\r\n                        <div class=\"col-md-12 h3\">\r\n                            @Html.Raw(String.IsNullOrEmpty(@mvp.Twitter.ToString()) ? \"\" : \"<a href=\\\"//twitter.com/\" + @mvp.Twitter + \"\\\" target=\\\"_default\\\"><i class=\\\"fa fa-twitter px-1\\\"></i></a>\" )\r\n                            @Html.Raw(String.IsNullOrEmpty(@mvp.LinkedIn.ToString()) ? \"\" : \"<a href=\\\"//www.linkedin.com/in/\" + @mvp.LinkedIn + \"\\\" target=\\\"_default\\\"><i class=\\\"fa fa-linkedin px-1\\\"></i></a>\" )\r\n                            @Html.Raw(String.IsNullOrEmpty(@mvp.Facebook.ToString()) ? \"\" : \"<a href=\\\"//www.facebook.com/\" + @mvp.Facebook + \"\\\" target=\\\"_default\\\"><i class=\\\"fa fa-facebook px-1\\\"></i></a>\" )\r\n                            @Html.Raw(String.IsNullOrEmpty(@mvp.GitHub.ToString()) ? \"\" : \"<a href=\\\"//github.com/\" + @mvp.GitHub + \"\\\" target=\\\"_default\\\"><i class=\\\"fa fa-github px-1\\\"></i></a>\" )\r\n                            @Html.Raw(String.IsNullOrEmpty(@mvp.Stackoverflow.ToString()) ? \"\" : \"<a href=\\\"//stackoverflow.com/users/\" + @mvp.Stackoverflow + \"\\\" target=\\\"_default\\\"><i class=\\\"fa fa-stack-overflow px-1\\\"></i></a>\" )\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        }\r\n    </div>\r\n</div>"
+      }
+    ]
+  }
+}
