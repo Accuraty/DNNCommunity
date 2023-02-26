@@ -1,0 +1,49 @@
+@using DotNetNuke.Web.Client.ClientResourceManagement
+
+@{
+  // Get the full Dnn-Elements on the page as a JS module
+  var include = new DnnJsInclude 
+  {
+    FilePath = "//unpkg.com/@dnncommunity/dnn-elements/dist/dnn/dnn.esm.js", 
+    ForceProvider = "DnnPageHeaderProvider",
+    Priority = 1001, // stay out of the way?
+    HtmlAttributesAsString = "type:module,async:async,defer:defer,crossorigin:anonymous",
+  };
+  var loader = (Context.CurrentHandler as Page).FindControl("ClientResourceIncludes");
+  if (loader != null)
+  {
+    loader.Controls.Add(include);
+  }  
+}
+
+<div id="wrapper-@CmsContext.Module.Id">
+
+  <h2>2sxc View using Dnn-Elements</h2>
+
+  <h3>1. Simple Button, as is</h3>
+  <dnn-button>Default (label)</dnn-button>
+
+  <h3>2. Use some of the Button's attributes</h3>
+  <dnn-button 
+    size="large"
+    type="secondary"
+    reversed="true"
+    title="This should get passed along untouched and appear like a tooltip on hover" 
+    onclick="alert('this is a dnn-elements button');"
+  >
+    Large Secondary and Reversed
+  </dnn-button>
+
+  <h3>3. Who doesn't love a Color Picker?</h3>
+  <dnn-color-picker color="EF3E42"></dnn-color-picker>
+
+  <hr style="margin-top:4rem;">
+  <p>That's all folks. This page goes with <a href="https://dnncommunity.org/blogs/Post/12141/" target="_blank">this Blog article.</a></p>
+
+</div>
+
+<style>
+  h3 {
+    margin-top: 1rem;
+  }
+</style>
