@@ -6,9 +6,13 @@
 @{
     var lib = CreateInstance("_library.cshtml"); 
 
-    var catFilter = Request.QueryString["category"];
+    var catFilter = Request.QueryString["category"];            // Countries
     var hasCategoryFilter = !String.IsNullOrEmpty(catFilter);
     var allCategories = AsDynamic(App.Data["Category"]);
+
+    var regFilter = Request.QueryString["region"];               // Regions (sorta continents, but not really)
+    var hasRegionFilter = !String.IsNullOrEmpty(regFilter);
+    var allRegions = allCategories;
 
     var newsPage = Dnn.Tab.FullUrl;
     var newsPageTab = Dnn.Module.TabID;
@@ -23,7 +27,7 @@
     Random rndm = new Random();
     var newsToShowRandomized = newsToShow.OrderBy(n => rndm.Next());
 
-    string urlDetailsParam = "agency-details"; // isAccuratyIP() ? "agency-details" : "detail";
+    string urlDetailsParam = "agency-details"; 
 }
 
 @if(!String.IsNullOrEmpty(Content.NewsPage)) 
@@ -32,37 +36,49 @@
     newsPageTab = int.Parse((AsEntity(Content).GetBestValue("NewsPage")).Split(':')[1]);
 }
 
-@if (false && isAccuratyIP()) {
-<pre>@GetIpAddress() - polymorph, use alternate agency details View 20230224 JRF</pre>
-}
-
 <div class="app-news app-news-list sc-element @((Permissions.UserMayEditContent) ? "app-edit" : "")" >
     @Edit.Toolbar(actions: "new, contentitems", contentType: "News", prefill: new { Date = DateTime.Now.Date, ShowFrom = DateTime.Now.Date, ShowTo =  (DateTime.Now.Date.AddYears(3)).Date } , settings: new { hover = "left", showCondition = true })
     @Edit.Toolbar(Content)
     <!--Category Filter == Displayed only if a category has been selected -->
-        @if (hasCategoryFilter) {
-            <div class="app-catinfo">
-@*
-                <h2>@allCategories.Where(x => x.UrlKey == catFilter).FirstOrDefault().ShowedTitle</h2>
-*@
-                <span>
-                  <a class="btn-sm btn-success btn mb-1" href="@lib.LinkToPage(newsPageTab, "", "", "", "", "", "")">
-                    Clear Filter
-                  </a>
-                </span>
-                @foreach (var c in allCategories)
-                {
-                <span>
-                  <a @Koi.Class("all='" + (catFilter == c.UrlKey ? "active disabled btn-outline-primary" : "btn-sm btn-primary") 
-                    + "' bs3='btn btn-primary btn-xs' bs4,unk='btn mb-1'") 
-                    href="@lib.LinkToPage(newsPageTab, "category", c.UrlKey, "", "", "", "")"
-@*                    title="UrlKey=@c.UrlKey, match? @(catFilter == c.UrlKey), UrlKey.GetType()=@c.UrlKey.GetType()" *@ @* debug? *@
-                  >@c.Name
-                  </a>
-                </span>
-                }
-            </div>
+    @if (hasCategoryFilter) {
+      <div class="app-catinfo">
+        @* <h2>@allCategories.Where(x => x.UrlKey == catFilter).FirstOrDefault().ShowedTitle</h2> *@
+          <span>
+            <a class="btn-sm btn-success btn mb-1" href="@lib.LinkToPage(newsPageTab, "", "", "", "", "", "")">
+              Clear Filter
+            </a>
+          </span>
+          @foreach (var c in allCategories)
+          {
+          <span>
+            <a @Koi.Class("all='" + (catFilter == c.UrlKey ? "active disabled btn-outline-primary" : "btn-sm btn-primary") 
+              + "' bs3='btn btn-primary btn-xs' bs4,unk='btn mb-1'") 
+              href="@lib.LinkToPage(newsPageTab, "category", c.UrlKey, "", "", "", "")"
+              @* title="UrlKey=@c.UrlKey, match? @(catFilter == c.UrlKey), UrlKey.GetType()=@c.UrlKey.GetType()" *@ @* debug? *@
+            >@c.Name</a>
+          </span>
+          }
+      </div>
+    }
+    <!-- Region Filter == Displayed only if a region filter exists -->
+    @if (false && hasRegionFilter) {
+      <div class="app-catinfo">
+        <span>
+          <a class="btn-sm btn-success btn mb-1" href="@lib.LinkToPage(newsPageTab, "", "", "", "", "", "")">
+            Clear Filter
+          </a>
+        </span>
+        @foreach (var r in allRegions)
+        {
+          <span>
+            <a @Koi.Class("all='" + (regFilter == r.UrlKey ? "active disabled btn-outline-primary" : "btn-sm btn-primary") 
+              + "' bs3='btn btn-primary btn-xs' bs4,unk='btn mb-1'") 
+              href="@lib.LinkToPage(newsPageTab, "region", r.UrlKey, "", "", "", "")"
+            >r.Name</a>
+          </span>
         }
+      </div>
+    }
     <div class="row">
         
         <!-- Beginning of content loop -->
@@ -81,14 +97,14 @@
             }
             <div class="app-details-link" onclick="window.open('@detailsLink','_self');">
                 <div class="row">
-                    <div @Koi.Class("bs3='col-xs-12 col-sm-6 col-md-4' bs4,unk='col-12 col-md-6 col-lg-4'")>
+                    <div class='col-12 col-md-6 col-lg-4'>
                     <!-- Image or Placeholder -->
-                        <div class="app-img @((String.IsNullOrEmpty(@item.Image)) ? "app-noimg" : "")">
-                            <img @Koi.Class("bs3='img-responsive' bs4,unk='img-fluid'") src="@((!String.IsNullOrEmpty(@item.Image)) ? @item.Image + "?w=400&h=240&mode=crop" + @item.CropAnchor : @App.Resources.PlaceholderMissingImage + "?max-height=210&mode=max&scale=both&quality=80")"alt="@item.Title" />
+                        <div class="p-5 app-img @((String.IsNullOrEmpty(@item.Image)) ? "app-noimg" : "")">
+                            <img class="img-fluid" src="@((!String.IsNullOrEmpty(@item.Image)) ? @item.Image + "?w=400&h=240&mode=crop" + @item.CropAnchor : @App.Resources.PlaceholderMissingImage + "?max-height=210&mode=max&scale=both&quality=80")"alt="@item.Title" />
                         </div>
                     </div>
                 
-                    <div @Koi.Class("bs3='col-xs-12 col-sm-6 col-md-8' bs4,unk='col-12 col-md-6 col-lg-8'")>
+                    <div class="col-12 col-md-6 col-lg-8">
                     <!-- Text Date Categories -->
                         <div class="app-text">
                             <h2 class="app-list">
@@ -144,7 +160,7 @@
 
     </div>
     @if (hasCategoryFilter) {
-        <a @Koi.Class("all='app-backtolist' bs3='btn btn-primary' bs4,unk='btn btn-outline-primary'") href="@newsPage">@Html.Raw(App.Resources.LabelBackToList)</a>
+        <a class="btn btn-outline-primary" href="@newsPage">@Html.Raw(App.Resources.LabelBackToList)</a>
     }
 
     @if (Content.ShowPagination) {
@@ -157,22 +173,6 @@
 
 
 @functions {
-  // by IP, is the remote IP address a known Accuraty WAN IP?
-  public bool isAccuratyIP() {
-    var list = new List<string> {
-      "127.0.0.1",        // localhost
-      "140.141.191.145",  // 1800 Oak
-      "97.81.36.168",     // RRMA/Obtuse 202212 JRF
-      "24.238.80.108",    // 132CPPA 202209 JRF
-    };
-    return list.Contains(GetIpAddress());
-  }
-  // Get IP address of the visitor
-  public string GetIpAddress() {
-    string stringIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-    if (stringIpAddress == null) {
-      stringIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
-    }
-    return stringIpAddress;
-  }
+
+
 }
