@@ -1,14 +1,14 @@
 {
   "folders": [
     {
-	  "name": "2sxc",
-      "path": "Portals/0/2sxc"
-    },
-    {
 	  "name": "Dnn Community (root)",
       "path": "."
     },
-  ],
+    {
+      "name": "2sxc",
+        "path": "Portals/0/2sxc"
+      },
+    ],
   "settings": {
     "editor.tabSize": 2,
     "editor.tabCompletion": "on"
